@@ -120,7 +120,8 @@ jobs:
           key: ${{ secrets.PRODUCTION_SSH_KEY }}
           script: |
             docker compose -f kittygram/docker-compose.production.yml pull
-            docker compose -f kittygram/docker-compose.production.yml restart
+            docker compose -f kittygram/docker-compose.production.yml down
+            docker compose -f kittygram/docker-compose.production.yml up -d
 
   auto_tests:
     runs-on: ubuntu-latest
@@ -156,7 +157,7 @@ jobs:
             Project ${{ github.repository }} was successfully deployed
             Created by: ${{ github.actor }}
             Commit: ${{ github.event.commits[0].message }}
-            Link: https://github.com${{ github.repository }}/commit/${{ github.sha }}
+            Link: https://github.com/${{ github.repository }}/commit/${{ github.sha }}
 
   notify_on_failure:
     runs-on: ubuntu-latest
@@ -171,4 +172,4 @@ jobs:
             Project ${{ github.repository }} failed to deploy
             Created by: ${{ github.actor }}
             Commit: ${{ github.event.commits[0].message }}
-            Link: https://github.com${{ github.repository }}/commit/${{ github.sha }}
+            Link: https://github.com/${{ github.repository }}/commit/${{ github.sha }}
