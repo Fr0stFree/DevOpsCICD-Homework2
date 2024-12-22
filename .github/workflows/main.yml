@@ -111,3 +111,35 @@ jobs:
           key: ${{ secrets.PRODUCTION_SSH_KEY }}
           source: "docker-compose.production.yml,.env"
           target: "/home/krasov_d/kittygram"
+
+      - name: Pull and restart containers
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.PRODUCTION_HOST }}
+          username: ${{ secrets.PRODUCTION_USER }}
+          key: ${{ secrets.PRODUCTION_SSH_KEY }}
+          script: |
+            docker compose -f kittygram/docker-compose.production.yml pull
+            docker compose -f kittygram/docker-compose.production.yml restart
+
+  notify_on_failure:
+    runs-on: ubuntu-latest
+    if: failure()
+    steps:
+      - name: Notify on failure
+        uses: appleboy/telegram-action@master
+        with:
+          to: ${{ secrets.TELEGRAM_CHAT_ID }}
+          token: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          message: "Deployment failed"
+
+  notify_on_success:
+    runs-on: ubuntu-latest
+    if: success()
+    steps:
+      - name: Notify on success
+        uses: appleboy/telegram-action@master
+        with:
+          to: ${{ secrets.TELEGRAM_CHAT_ID }}
+          token: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          message: "Deployment successful"
