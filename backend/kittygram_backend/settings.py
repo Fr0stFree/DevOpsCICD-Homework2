@@ -3,7 +3,7 @@ from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = os.environ["DJANGO_SECRET"]
+SECRET_KEY = os.environ.get("DJANGO_SECRET", "something-secret")
 
 DEBUG = False
 
@@ -62,11 +62,11 @@ WSGI_APPLICATION = 'kittygram_backend.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': os.environ["POSTGRES_DB"],
-        'USER': os.environ["POSTGRES_USER"],
-        'PASSWORD': os.environ["POSTGRES_PASSWORD"],
-        'HOST': os.environ["POSTGRES_HOST"],
-        'PORT': int(os.environ["POSRGRES_PORT"])
+        'NAME': os.environ.get("POSTGRES_DB", "postgres"),
+        'USER': os.environ.get("POSTGRES_USER", "postgres"),
+        'PASSWORD': os.environ.get("POSTGRES_PASSWORD", "postgres"),
+        'HOST': os.environ.get("POSTGRES_HOST", "localhost"),
+        'PORT': int(os.environ.get("POSRGRES_PORT", 5432))
     }
 }
 

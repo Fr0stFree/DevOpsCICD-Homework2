@@ -1,12 +1,10 @@
 #!/bin/bash
 
-echo "Collect static files"
-python manage.py collectstatic --noinput
+echo "Collecting static files..."
+python manage.py collectstatic --noinput || exit 1
 
-# Apply database migrations
-echo "Apply database migrations"
-python manage.py migrate
+echo "Applying database migrations..."
+python manage.py migrate || exit 1
 
-# Start server
-echo "Starting server..."
+echo "Running the server..."
 python manage.py runserver 0.0.0.0:8000
