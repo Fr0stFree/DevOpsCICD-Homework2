@@ -20,7 +20,9 @@ jobs:
         run: |
           python -m pip install --upgrade pip 
           pip install flake8==7.1.1 flake8-isort==6.1.1
-          python -m flake8 --extend-exclude .venv,migrations backend
+      
+      - name: Run linters
+        run: python -m flake8 --extend-exclude .venv,migrations backend
 
   build_and_push_backend:
     runs-on: ubuntu-latest
@@ -122,6 +124,7 @@ jobs:
 
   auto-tests:
     runs-on: ubuntu-latest
+    needs: deploy
     steps:
     - name: Check out code
       uses: actions/checkout@v3
